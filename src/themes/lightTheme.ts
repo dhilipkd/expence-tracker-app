@@ -1,7 +1,7 @@
 import { colors } from "./colors";
 
 export const lightTheme = {
-    background: colors.white,
+    background: "#ffffff",
     card: "#F8F9FA",
     input: "#F3F4F6",
 
