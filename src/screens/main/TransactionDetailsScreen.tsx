@@ -6,6 +6,11 @@ import {
     Alert,
     Linking,
 } from "react-native";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from '../../types/navigation.types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../hooks/ThemeContext";
@@ -13,10 +18,16 @@ import TConfirmDialog from "../../components/common/TConfirmDialog";
 import {
     deleteTransaction,
 } from "../../services/transactionService";
+
+type NavigationProp = NativeStackNavigationProp<
+    RootStackParamList
+>;
+
 export default function TransactionDetailsScreen({
-    route,
-    navigation,
 }: any) {
+
+    const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<any>();
     const { transaction } = route.params;
     const { theme } = useTheme();
 

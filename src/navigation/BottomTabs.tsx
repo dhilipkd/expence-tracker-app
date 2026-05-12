@@ -23,6 +23,7 @@ export default function BottomTabs() {
 
   return (
     <Tab.Navigator
+      id="MainBottomTabs"
       screenOptions={({ route }) => ({
         headerShown: false,
 
@@ -86,7 +87,7 @@ export default function BottomTabs() {
             iconName = focused ? "swap-horizontal" : "swap-horizontal-outline";
           } else if (route.name === "CreateTransaction") {
             iconName = focused ? "add" : "add-outline";
-          } else if (route.name === "Report") {
+          } else if (route.name === "Reports") {
             iconName = focused ? "stats-chart" : "stats-chart-outline";
           } else {
             iconName = focused ? "person" : "person-outline";
@@ -141,7 +142,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Home" component={DashboardScreen} />
       <Tab.Screen name="Transactions" component={TransactionsScreen} />
       <Tab.Screen name="CreateTransaction" component={CreateTransactionsScreen} options={{ tabBarLabel: "" }} />
-      <Tab.Screen name="Report" component={ReportScreen} />
+      <Tab.Screen name="Reports" component={ReportScreen} />
       <Tab.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={{ tabBarLabel: "Profile" }} />
     </ Tab.Navigator >
   )

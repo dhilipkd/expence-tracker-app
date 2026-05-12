@@ -10,6 +10,7 @@ export type RootStackParamList = {
     MainTabs: undefined;
     Settings: undefined;
     Themes: undefined;
+    Reports: undefined;
     CustomCategory: undefined;
     Transactions: undefined;
     TransactionDetails: {

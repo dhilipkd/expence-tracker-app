@@ -152,8 +152,27 @@ export default function CreateTransactionScreen() {
     useEffect(() => {
 
         const unsubscribe = subscribeCategories((data) => {
-            setCategories(data.filter((c) => c.type === type));
-            setSelectedCategory(null);
+
+            const filtered =
+                data.filter((c) => c.type === type);
+
+            setCategories(filtered);
+
+            // EDIT MODE
+            if (editData) {
+
+                const matchedCategory =
+                    filtered.find(
+                        (c) =>
+                            c.id === editData.categoryId
+                    );
+
+                if (matchedCategory) {
+                    setSelectedCategory(
+                        matchedCategory
+                    );
+                }
+            }
         });
 
         return () => unsubscribe?.();
@@ -230,7 +249,7 @@ export default function CreateTransactionScreen() {
 
             if (success) {
                 resetForm();
-                navigation.navigate("Transactions");
+                navigation.navigate("MainTabs", { screen: "Transactions" } as any);
             } else {
                 Alert.alert(
                     "Error",
