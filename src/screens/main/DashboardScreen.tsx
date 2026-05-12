@@ -215,17 +215,19 @@ function Last7DaysChart({ transactions, theme }: Last7DaysProps) {
                             onPress={() => setSelectedIdx(i)}
                         >
                             {/* amount label above bar */}
-                            <Text
-                                style={[
-                                    styles.barAmtLabel,
-                                    {
-                                        color: isSelected ? "#8B5CF6" : "transparent",
-                                        fontWeight: "700",
-                                    },
-                                ]}
-                            >
-                                {shortFmt(b.total)}
-                            </Text>
+                            {isSelected && (
+                                <Text
+                                    style={[
+                                        styles.barAmtLabel,
+                                        {
+                                            color: "#8B5CF6",
+                                            fontWeight: "700",
+                                        },
+                                    ]}
+                                >
+                                    {shortFmt(b.total)}
+                                </Text>
+                            )}
 
                             {/* bar track */}
                             <View
