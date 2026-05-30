@@ -70,6 +70,7 @@ export default function CreateTransactionScreen() {
 
     const [categories, setCategories] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<any>(null);
+    const [allCategories, setAllCategories] = useState<any[]>([]);
 
     const toggleOptions: {
         label: string;
@@ -151,33 +152,42 @@ export default function CreateTransactionScreen() {
 
     useEffect(() => {
 
-        const unsubscribe = subscribeCategories((data) => {
+        const unsubscribe =
+            subscribeCategories((data) => {
 
-            const filtered =
-                data.filter((c) => c.type === type);
+                setAllCategories(data);
 
-            setCategories(filtered);
-
-            // EDIT MODE
-            if (editData) {
-
-                const matchedCategory =
-                    filtered.find(
-                        (c) =>
-                            c.id === editData.categoryId
-                    );
-
-                if (matchedCategory) {
-                    setSelectedCategory(
-                        matchedCategory
-                    );
-                }
-            }
-        });
+            });
 
         return () => unsubscribe?.();
 
-    }, [type]);
+    }, []);
+
+    useEffect(() => {
+
+        const filtered =
+            allCategories.filter(
+                (c) => c.type === type
+            );
+
+        setCategories(filtered);
+
+        if (editData) {
+
+            const matchedCategory =
+                filtered.find(
+                    (c) =>
+                        c.id === editData.categoryId
+                );
+
+            if (matchedCategory) {
+                setSelectedCategory(
+                    matchedCategory
+                );
+            }
+        }
+
+    }, [type, allCategories]);
 
     /* ---------------- SAVE ---------------- */
     const handleSave = async () => {

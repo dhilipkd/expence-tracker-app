@@ -1,4 +1,9 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
 
 export const uploadFileToStorage = async (
     file: {
@@ -11,24 +16,68 @@ export const uploadFileToStorage = async (
     try {
         const storage = getStorage();
 
-        // convert URI → blob
-        const response = await fetch(file.uri);
-        const blob = await response.blob();
+        const blob: Blob = await new Promise(
+            (resolve, reject) => {
 
-        const filePath = `transactions/${userId}/${Date.now()}_${file.name}`;
-        const storageRef = ref(storage, filePath);
+                const xhr =
+                    new XMLHttpRequest();
 
-        await uploadBytes(storageRef, blob);
+                xhr.onload = function () {
+                    resolve(xhr.response);
+                };
 
-        const downloadURL = await getDownloadURL(storageRef);
+                xhr.onerror = function () {
+                    reject(
+                        new TypeError(
+                            "Network request failed"
+                        )
+                    );
+                };
+
+                xhr.responseType = "blob";
+
+                xhr.open(
+                    "GET",
+                    file.uri,
+                    true
+                );
+
+                xhr.send(null);
+            }
+        );
+
+        const filePath =
+            `transactions/${userId}/${Date.now()}_${file.name}`;
+
+        const storageRef =
+            ref(storage, filePath);
+
+        await uploadBytes(
+            storageRef,
+            blob,
+            {
+                contentType: file.type,
+            }
+        );
+
+        const downloadURL =
+            await getDownloadURL(
+                storageRef
+            );
 
         return {
             url: downloadURL,
             name: file.name,
             type: file.type,
         };
+
     } catch (error) {
-        console.log("Upload error:", error);
+
+        console.log(
+            "Upload error:",
+            error
+        );
+
         throw error;
     }
 };
